@@ -3,9 +3,10 @@ import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { SequelizeModule } from '@nestjs/sequelize';
 import { User } from './users/user.model';
-import { UsersController } from './users/users.controller';
 import { UsersModule } from './users/users.module';
-import { UsersService } from './users/users.service';
+import { EventsController } from './events/events.controller';
+import { EventsModule } from './events/events.module';
+import { Event } from './events/event.model';
 
 @Module({
   imports: [SequelizeModule.forRoot({
@@ -15,8 +16,8 @@ import { UsersService } from './users/users.service';
     username: 'postgres',
     password: 'postgres',
     database: 'jackpot',
-    models: [User],
-  }), UsersModule],
+    models: [User, Event],
+  }), UsersModule, EventsModule],
   controllers: [AppController],
   providers: [AppService],
 })
