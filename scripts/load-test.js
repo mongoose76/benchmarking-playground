@@ -1,11 +1,11 @@
 import http from 'k6/http';
 import { sleep, check } from 'k6';
 
+let vus = 2000;
 export let options = {
   stages: [
-    { duration: "30s", target: 1000 }, // simulate ramp-up of traffic from 1 to 1000 users over 30 s.
-    { duration: "30s", target: 1000 }, // stay at 1000 users for 30 s
-    { duration: "30s", target: 0 }, // ramp-down to 0 users
+    { duration: "30s", target: vus }, // simulate ramp-up of traffic from 1 to max users over 30 s.
+    { duration: "30s", target: vus }, // stay at max users for 30 s
   ],
   thresholds: {
     'http_req_duration': ['p(99)<100'], // 99% of requests must complete below 100ms
