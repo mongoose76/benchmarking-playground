@@ -17,6 +17,7 @@ import { Event } from './events/event.model';
     password: 'postgres',
     database: 'jackpot',
     models: [User, Event],
+    logging: false,
   }), UsersModule, EventsModule],
   controllers: [AppController],
   providers: [AppService],
