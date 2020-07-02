@@ -1,0 +1,33 @@
+
+          /\      |‾‾|  /‾‾/  /‾/   
+     /\  /  \     |  |_/  /  / /    
+    /  \/    \    |      |  /  ‾‾\  
+   /          \   |  |‾\  \ | (_) | 
+  / __________ \  |__|  \__\ \___/ .io
+
+    init [----------------------------------------------------------] runner    init [----------------------------------------------------------] options    init [----------------------------------------------------------] executor    init [----------------------------------------------------------]   engine    init [----------------------------------------------------------]   collector    init [----------------------------------------------------------]   server  execution: local
+     output: -
+     script: ./scripts/load-test.js
+
+    duration: -, iterations: -
+         vus: 1, max: 2000
+
+    init [----------------------------------------------------------] starting
+    ✓ is status 201
+
+    checks.....................: 100.00% ✓ 47009  ✗ 0     
+    data_received..............: 15 MB   256 kB/s
+    data_sent..................: 8.0 MB  134 kB/s
+    http_req_blocked...........: avg=35.93µs  min=4.4µs  med=6.5µs  max=4.24ms p(90)=9.8µs  p(95)=22.3µs 
+    http_req_connecting........: avg=24.48µs  min=0s     med=0s     max=4.15ms p(90)=0s     p(95)=0s     
+  ✗ http_req_duration..........: avg=904.44ms min=2.47ms med=1.27s  max=1.44s  p(90)=1.37s  p(95)=1.39s  
+    http_req_receiving.........: avg=45.12µs  min=19.7µs med=42.8µs max=2.03ms p(90)=61.9µs p(95)=69µs   
+    http_req_sending...........: avg=18.4µs   min=7.9µs  med=15.2µs max=1.81ms p(90)=23.8µs p(95)=36.25µs
+    http_req_tls_handshaking...: avg=0s       min=0s     med=0s     max=0s     p(90)=0s     p(95)=0s     
+    http_req_waiting...........: avg=904.38ms min=2.38ms med=1.27s  max=1.44s  p(90)=1.37s  p(95)=1.39s  
+    http_reqs..................: 47009   783.481061/s
+    iteration_duration.........: avg=1.89s    min=1s     med=2.27s  max=2.44s  p(90)=2.36s  p(95)=2.39s  
+    iterations.................: 46192   769.864434/s
+    vus........................: 2000    min=66   max=2000
+    vus_max....................: 2000    min=2000 max=2000
+
