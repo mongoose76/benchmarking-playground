@@ -2,7 +2,8 @@ const dotenv = require('dotenv');
 
 dotenv.config();
 
-const { Sequelize, DataTypes, Model } = require('sequelize');
+const { Sequelize, DataTypes, Model, QueryTypes } = require('sequelize');
+
 const sequelize = new Sequelize(process.env.DATABASE_URL, { logging: false });
 
 class Event extends Model {}
@@ -40,6 +41,29 @@ app.get('/', async (req, res) => {
   let ev = Event.build({ type: 'spin', value: 2 });
   let x = ev.save();
   await x;
+
+  res.send({});
+});
+
+app.get('/raw', async (req, res) => {
+  const q = `
+    INSERT INTO 
+    public."Events"
+    (
+      type,
+      value,
+      "createdAt",
+      "updatedAt"
+    )
+    VALUES (
+      'spin',
+      2,
+      now(),
+      now()
+    ) RETURNING "id","type","value","createdAt","updatedAt"
+  `;
+  const event = await sequelize.query(q, { type: QueryTypes.INSERT });
+
   res.send({});
 });
 
