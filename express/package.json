@@ -5,7 +5,8 @@
   "license": "MIT",
   "scripts": {
     "start": "node index.js",
-    "start2": "node index2.js"
+    "start2": "node index2.js",
+    "load-test": "k6 run --summary-trend-stats=\"avg,min,max,p(90),p(99)\" ./scripts/load-test-get.js"
   },
   "dependencies": {
     "dotenv": "^8.2.0",
