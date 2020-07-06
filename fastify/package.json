@@ -5,12 +5,14 @@
   "license": "MIT",
   "scripts": {
     "start": "node index.js",
+    "start:mysql": "node index-mysql.js",
     "load-test-2k": "k6 run -e VUS=2000 --summary-trend-stats=\"avg,min,max,p(90),p(95),p(99)\" ./scripts/load-test-get.js > load-test/2000-vus",
     "load-test-3k": "k6 run -e VUS=3000 --summary-trend-stats=\"avg,min,max,p(90),p(95),p(99)\" ./scripts/load-test-get.js > load-test/3000-vus"
   },
   "dependencies": {
     "dotenv": "^8.2.0",
     "fastify": "^2.15.1",
+    "mysql2": "^2.1.0",
     "pg": "^8.2.1"
   }
 }

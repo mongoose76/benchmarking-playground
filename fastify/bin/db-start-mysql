@@ -1,0 +1,8 @@
+./bin/db-stop
+docker run \
+  -e MYSQL_ROOT_PASSWORD=rootpw \
+  -e MYSQL_DATABASE=jackpot \
+  -e MYSQL_USER=mysql \
+  -e MYSQL_PASSWORD=mysql \
+  -p 3306:3306 \
+  --name jackpot-db -d circleci/mysql:8.0.4
