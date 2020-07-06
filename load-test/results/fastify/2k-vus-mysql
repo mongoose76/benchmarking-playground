@@ -1,0 +1,37 @@
+yarn run v1.22.4
+$ VUS=2000 yarn load-test
+$ k6 run --summary-trend-stats="avg,min,max,p(90),p(95),p(99)" load-test-get.js
+
+          /\      |‾‾|  /‾‾/  /‾/   
+     /\  /  \     |  |_/  /  / /    
+    /  \/    \    |      |  /  ‾‾\  
+   /          \   |  |‾\  \ | (_) | 
+  / __________ \  |__|  \__\ \___/ .io
+
+    init [----------------------------------------------------------] runner    init [----------------------------------------------------------] options    init [----------------------------------------------------------] executor    init [----------------------------------------------------------]   engine    init [----------------------------------------------------------]   collector    init [----------------------------------------------------------]   server  execution: local
+     output: -
+     script: load-test-get.js
+
+    duration: -, iterations: -
+         vus: 1, max: 2000
+
+    init [----------------------------------------------------------] starting
+    ✓ is status 200
+
+    checks.....................: 100.00% ✓ 115174 ✗ 0     
+    data_received..............: 17 MB   279 kB/s
+    data_sent..................: 9.1 MB  151 kB/s
+    http_req_blocked...........: avg=25.45µs min=4.2µs  max=10.17ms  p(90)=10.4µs p(95)=16.29µs p(99)=472.74µs
+    http_req_connecting........: avg=16.69µs min=0s     max=10.06ms  p(90)=0s     p(95)=0s      p(99)=405.34µs
+  ✓ http_req_duration..........: avg=6.59ms  min=1.07ms max=143.31ms p(90)=9.76ms p(95)=13.16ms p(99)=46.38ms 
+    http_req_receiving.........: avg=44.66µs min=17.3µs max=2.54ms   p(90)=62µs   p(95)=72.1µs  p(99)=102.82µs
+    http_req_sending...........: avg=16.26µs min=6.1µs  max=13.87ms  p(90)=22.2µs p(95)=28.9µs  p(99)=76.2µs  
+    http_req_tls_handshaking...: avg=0s      min=0s     max=0s       p(90)=0s     p(95)=0s      p(99)=0s      
+    http_req_waiting...........: avg=6.52ms  min=1.04ms max=143.23ms p(90)=9.69ms p(95)=13.09ms p(99)=46.29ms 
+    http_reqs..................: 115174  1919.561836/s
+    iteration_duration.........: avg=1s      min=1s     max=1.14s    p(90)=1.01s  p(95)=1.01s   p(99)=1.04s   
+    iterations.................: 113182  1886.361919/s
+    vus........................: 2000    min=393  max=2000
+    vus_max....................: 2000    min=2000 max=2000
+
+Done in 93.22s.

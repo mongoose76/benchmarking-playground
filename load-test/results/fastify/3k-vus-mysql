@@ -1,0 +1,38 @@
+yarn run v1.22.4
+$ VUS=3000 yarn load-test
+$ k6 run --summary-trend-stats="avg,min,max,p(90),p(95),p(99)" load-test-get.js
+
+          /\      |‾‾|  /‾‾/  /‾/   
+     /\  /  \     |  |_/  /  / /    
+    /  \/    \    |      |  /  ‾‾\  
+   /          \   |  |‾\  \ | (_) | 
+  / __________ \  |__|  \__\ \___/ .io
+
+    init [----------------------------------------------------------] runner    init [----------------------------------------------------------] options    init [----------------------------------------------------------] executor    init [----------------------------------------------------------]   engine    init [----------------------------------------------------------]   collector    init [----------------------------------------------------------]   server  execution: local
+     output: -
+     script: load-test-get.js
+
+    duration: -, iterations: -
+         vus: 1, max: 3000
+
+    init [----------------------------------------------------------] starting
+    ✓ is status 200
+
+    checks.....................: 100.00% ✓ 165057 ✗ 0     
+    data_received..............: 24 MB   401 kB/s
+    data_sent..................: 13 MB   217 kB/s
+    http_req_blocked...........: avg=37µs    min=4.4µs  max=11.58ms  p(90)=12.2µs   p(95)=19.2µs   p(99)=905.24µs
+    http_req_connecting........: avg=27.08µs min=0s     max=11.52ms  p(90)=0s       p(95)=0s       p(99)=814.23µs
+  ✗ http_req_duration..........: avg=51.33ms min=1.15ms max=395.94ms p(90)=135.88ms p(95)=186.19ms p(99)=284.21ms
+    http_req_receiving.........: avg=58.23µs min=19.6µs max=83.85ms  p(90)=73.2µs   p(95)=90.2µs   p(99)=224.8µs 
+    http_req_sending...........: avg=20.99µs min=6.9µs  max=19.89ms  p(90)=25µs     p(95)=34µs     p(99)=94.3µs  
+    http_req_tls_handshaking...: avg=0s      min=0s     max=0s       p(90)=0s       p(95)=0s       p(99)=0s      
+    http_req_waiting...........: avg=51.25ms min=1.05ms max=395.77ms p(90)=135.79ms p(95)=186.1ms  p(99)=284.13ms
+    http_reqs..................: 165057  2750.940074/s
+    iteration_duration.........: avg=1.05s   min=1s     max=1.39s    p(90)=1.13s    p(95)=1.18s    p(99)=1.28s   
+    iterations.................: 162520  2708.656893/s
+    vus........................: 3000    min=592  max=3000
+    vus_max....................: 3000    min=3000 max=3000
+
+info Visit https://yarnpkg.com/en/docs/cli/run for documentation about this command.
+info Visit https://yarnpkg.com/en/docs/cli/run for documentation about this command.
