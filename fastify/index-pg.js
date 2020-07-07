@@ -80,7 +80,7 @@ app.get('/', async (req, res) => {
 // Run the server!
 const start = async () => {
   try {
-    await app.listen(3000)
+    await app.listen(port)
     app.log.info(`server listening on ${app.server.address().port}`)
   } catch (err) {
     app.log.error(err)
