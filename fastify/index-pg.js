@@ -6,7 +6,7 @@ const port = 3000;
 
 app.get("/", async (req, res) => {
   let r = await db.insertEvent();
-  res.send({});
+  res.send(r.rows[0]);
 });
 
 // Run the server!
