@@ -7,23 +7,23 @@ const pool = new Pool({
   max: process.env.DATABASE_MAX_CONN,
 });
 
-async function query(q) {
-  const client = await pool.connect();
-  let res = {};
+async function query(sql) {
+  const connection = await pool.connect();
+  let res;
 
   try {
-    res = await client.query(q);
+    res = await connection.query(sql);
   } catch (err) {
     console.log(err);
   } finally {
-    client.release();
+    await connection.release();
   }
 
   return res;
 }
 
 async function createTable() {
-  const q = `CREATE TABLE IF NOT EXISTS public."Events" (
+  const sql = `CREATE TABLE IF NOT EXISTS public."Events" (
     id SERIAL,
     type VARCHAR(255),
     value INTEGER,
@@ -33,36 +33,27 @@ async function createTable() {
 )
 WITH (oids = false);
 `;
-  await query(q);
+  await query(sql);
 }
 
 async function deleteEvents() {
-  const q = `
-      TRUNCATE 
-      public."Events"
-    `;
-  await query(q);
+  const sql = `TRUNCATE public."Events"`;
+  await query(sql);
 }
 
 async function insertEvent() {
-  const q = `
+  const sql = `
       INSERT INTO 
       public."Events"
       (
-        type,
-        value,
-        "createdAt",
-        "updatedAt"
+        "type", "value", "createdAt", "updatedAt"
       )
       VALUES (
-        'spin',
-        2,
-        now(),
-        now()
-      ) RETURNING "id","type","value","createdAt","updatedAt"
+        'spin', 2, now(), now()
+      ) RETURNING "id", "type", "value", "createdAt", "updatedAt"
     `;
 
-  return await query(q);
+  return await query(sql);
 }
 
 module.exports = { 
