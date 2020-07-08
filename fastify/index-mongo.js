@@ -1,4 +1,4 @@
-const db = require("./db/pg");
+const db = require("./db/mongo");
 
 const fastify = require("fastify");
 const app = fastify({ logger: false });
@@ -6,15 +6,12 @@ const port = 3000;
 
 app.get("/", async (req, res) => {
   let r = await db.insertEvent();
-  res.send(r.rows[0]);
+  res.send(r.ops[0]);
 });
 
 // Run the server!
 const start = async () => {
   try {
-    await db.createTable();
-    await db.deleteEvents();
-
     await app.listen(port);
     app.log.info(`server listening on ${app.server.address().port}`);
   } catch (err) {

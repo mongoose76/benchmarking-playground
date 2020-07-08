@@ -1,0 +1,6 @@
+./bin/db-stop
+docker run \
+  -e MONGO_INITDB_ROOT_USERNAME:mongo \
+  -e MONGO_INITDB_ROOT_PASSWORD:mongo \
+  -p 27017:27017 \
+  --name jackpot-db -d circleci/mongo:4.2.8
