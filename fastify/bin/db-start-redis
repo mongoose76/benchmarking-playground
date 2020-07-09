@@ -1,0 +1,4 @@
+./bin/db-stop
+docker run \
+  -p 6379:6379 \
+  --name jackpot-db -d circleci/redis:6.0.5-alpine
