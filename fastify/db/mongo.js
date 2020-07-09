@@ -2,29 +2,29 @@ const dotenv = require('dotenv');
 dotenv.config();
 
 const MongoClient = require('mongodb').MongoClient;
-const assert = require('assert');
 
 // Connection URL
 const url = 'mongodb://localhost:27017';
 
-var db;
+var dbOptions = { 
+  useNewUrlParser: true, 
+  useUnifiedTopology: true, 
+  auto_reconnect: true, 
+  poolSize: 50,
+};
+var _db;
 
 // Initialize connection once
-MongoClient.connect(url, { useNewUrlParser: true, useUnifiedTopology: true, poolSize: 100 }, function(err, client) {
+MongoClient.connect(url, dbOptions, function(err, client) {
   if(err) throw err;
-  db = client.db('jackpot');
-  //console.log(db);
-
-  let collection = db.collection('events');
-  collection.deleteMany({});
+  _db = client.db('jackpot');
+  _db.collection('events').deleteMany({});
 });
 
 async function insertOne(obj) {
   let res;
   try {
-      let collection = db.collection('events');
-      res = await collection.insertOne(obj);
-      //console.log(res);
+      res = await _db.collection('events').insertOne(obj);
   } catch (err) {
       console.log(err);
   }
