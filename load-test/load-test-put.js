@@ -54,7 +54,7 @@ export default function() {
   let url = 'http://127.0.0.1:3000/refs';
   res = http.get(url);
   check(res, {
-    'get ref by id returns 200': (r) => r.status === 200,
+    'get refs returns 200': (r) => r.status === 200,
   });
 
   sleep(1);
