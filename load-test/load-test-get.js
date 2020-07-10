@@ -13,7 +13,7 @@ export let options = {
 };
 
 export default function() {
-  let url = 'http://127.0.0.1:3000';
+  let url = 'http://127.0.0.1:3000/refs/123456';
   let res = http.get(url);
 
   check(res, {

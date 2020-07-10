@@ -16,48 +16,66 @@ async function query(sql) {
   } catch (err) {
     console.log(err);
   } finally {
-    await connection.release();
+    connection.release();
   }
 
   return res;
 }
 
+async function dropTable() {
+  let sql = `DROP TABLE IF EXISTS "Events"`;
+  await query(sql);
+}
+
 async function createTable() {
-  const sql = `CREATE TABLE IF NOT EXISTS public."Events" (
+  let sql = `CREATE TABLE IF NOT EXISTS "Events" (
     id SERIAL,
-    type VARCHAR(255),
-    value INTEGER,
+    "refId" VARCHAR(100) NOT NULL,
+    payload JSONB,
     "createdAt" TIMESTAMP WITH TIME ZONE NOT NULL,
-    "updatedAt" TIMESTAMP WITH TIME ZONE NOT NULL,
     CONSTRAINT "Events_pkey" PRIMARY KEY(id)
-)
-WITH (oids = false);
-`;
+  )
+  WITH (oids = false);`;
+  await query(sql);
+
+  sql = `CREATE INDEX idx_refid ON "Events" ("refId")`;
+  await query(sql);
+
+  sql = `CREATE INDEX idx_value ON "Events" ((payload->>'type'))`;
   await query(sql);
 }
 
 async function deleteEvents() {
-  const sql = `TRUNCATE public."Events"`;
+  const sql = `TRUNCATE "Events"`;
   await query(sql);
 }
 
-async function insertEvent() {
+async function getRefIdAggregateValue(refId) {
+  const sql = `select sum(CAST(payload ->> 'value' AS INTEGER)) AS val from  "Events" 
+                WHERE "refId" = '${refId}' AND payload ->> 'type' = 'spin'`;
+  let res = await query(sql);
+  //console.log(res);
+  return res.rows[0].val;
+}
+async function insertEvent(refId, ev) {
   const sql = `
       INSERT INTO 
-      public."Events"
+      "Events"
       (
-        "type", "value", "createdAt", "updatedAt"
+        "refId", "payload", "createdAt"
       )
       VALUES (
-        'spin', 2, now(), now()
-      ) RETURNING "id", "type", "value", "createdAt", "updatedAt"
+        '${refId}', '${JSON.stringify(ev)}', now()
+      ) RETURNING "id", "refId", "payload", "createdAt"
     `;
 
   return await query(sql);
 }
 
-module.exports = { 
+module.exports = {
+  dropTable,
+  createTable,
   deleteEvents, 
-  insertEvent, 
-  createTable 
+  insertEvent,
+  getRefIdAggregateValue
 }
