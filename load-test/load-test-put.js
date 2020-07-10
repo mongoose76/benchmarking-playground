@@ -12,17 +12,26 @@ export let options = {
   }
 };
 
+function postEvent(event) {
+  let headers = {'Content-Type': 'application/json'};
+  let url = 'http://127.0.0.1:3000/events';
+  return http.post(url, JSON.stringify(event), {headers: headers});
+}
+
+const refIds = ['A', 'B', 'C', 'D'];
+
 export default function() {
+  var refId = refIds[Math.floor(refIds.length * Math.random())];
+  let userId = __VU;
+
   let spinEvent = {
-    "refId": 123456,
-    "userId": __VU,
+    "refId": refId,
+    "userId": userId,
     "type": "spin",
     "value": Math.round(100 * Math.random())
   };
 
-  let headers = {'Content-Type': 'application/json'};
-  let url = 'http://127.0.0.1:3000/events';
-  let res = http.post(url, JSON.stringify(spinEvent), {headers: headers});
+  let res = postEvent(spinEvent);
 
   check(res, {
     'post event returns 201': (r) => r.status === 201,
@@ -30,25 +39,23 @@ export default function() {
 
   if (__ITER % 100 === 0 && __VU % 50 === 0) {
     let redemptionEvent = {
-      "refId": 123456,
-      "userId": __VU,
+      "refId": refId,
+      "userId": userId,
       "type": "redeem"
     };
-    let headers = {'Content-Type': 'application/json'};
-    let url = 'http://127.0.0.1:3000/events';
-    let res = http.post(url, JSON.stringify(redemptionEvent), {headers: headers});
+
+    let res = postEvent(redemptionEvent);
+    
     check(res, {
       'post event returns 201': (r) => r.status === 201,
     });
   }
 
-  
-
-  //url = 'http://127.0.0.1:3000/refs/123456';
-  //res = http.get(url);
-  //check(res, {
-  //  'get ref by id returns 200': (r) => r.status === 200,
-  //});
+  let url = 'http://127.0.0.1:3000/refs';
+  res = http.get(url);
+  check(res, {
+    'get ref by id returns 200': (r) => r.status === 200,
+  });
 
   sleep(1);
 }
