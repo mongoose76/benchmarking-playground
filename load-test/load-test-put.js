@@ -24,14 +24,14 @@ export default function() {
   var refId = refIds[Math.floor(refIds.length * Math.random())];
   let userId = __VU;
 
-  let spinEvent = {
+  let contributeEvent = {
     "refId": refId,
     "userId": userId,
-    "type": "spin",
+    "type": "contribute",
     "value": Math.round(100 * Math.random())
   };
 
-  let res = postEvent(spinEvent);
+  let res = postEvent(contributeEvent);
 
   check(res, {
     'post event returns 201': (r) => r.status === 201,
@@ -51,7 +51,7 @@ export default function() {
     });
   }
 
-  let url = 'http://127.0.0.1:3000/refs';
+  let url = 'http://127.0.0.1:3000/jackpots';
   res = http.get(url);
   check(res, {
     'get refs returns 200': (r) => r.status === 200,
