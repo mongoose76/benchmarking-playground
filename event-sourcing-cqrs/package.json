@@ -9,6 +9,7 @@
   "dependencies": {
     "dotenv": "^8.2.0",
     "fastify": "^2.15.1",
-    "pg": "^8.2.1"
+    "pg": "^8.3.0",
+    "pg-cursor": "^2.3.0"
   }
 }

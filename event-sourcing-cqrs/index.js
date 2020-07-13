@@ -31,23 +31,25 @@ app.post("/events", async (req, res) => {
 // Run the server!
 const start = async () => {
   try {
-    await db.dropTable();
-    await db.createTable();
-    await db.deleteEvents();
+    //await db.dropTable();
+    //await db.createTable();
+    //await db.deleteEvents();
 
-    events.loadEventsFromDB();
-    
-    let startJackpotEvent = {
-      type: 'start',
-      refs: ['A', 'C']
+    if (jackpots.getAll().length === 0) {
+      console.log("Starting jackpots ...");
+
+      let startJackpotEvent = {
+        type: 'start',
+        refs: ['A', 'C']
+      }
+      events.addEvent(startJackpotEvent);
+      
+      startJackpotEvent = {
+        type: 'start',
+        refs: ['B', 'D']
+      }
+      events.addEvent(startJackpotEvent);
     }
-    events.addEvent(startJackpotEvent);
-    
-    startJackpotEvent = {
-      type: 'start',
-      refs: ['B', 'D']
-    }
-    events.addEvent(startJackpotEvent);
 
     await app.listen(port);
     app.log.info(`server listening on ${app.server.address().port}`);
@@ -56,4 +58,4 @@ const start = async () => {
     process.exit(1);
   }
 };
-start();
+events.loadEvents().then(() => start());

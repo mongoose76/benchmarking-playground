@@ -10,15 +10,8 @@ async function addEvent(ev) {
   return dbEv;
 }
 
-function loadEventsFromDB() {
-  // load all events from db and pass them to the process pipeline
-  // for (ev in database events) {
-  //   processEvent(ev); 
-  // }
-}
-
 function processEvent(ev) {
-  //console.log("processing event " + JSON.stringify(ev));
+  console.log("processing event " + JSON.stringify(ev));
   switch (ev.type) {
     case 'start':
       processStartEvent(ev);
@@ -30,6 +23,10 @@ function processEvent(ev) {
       processRedeemEvent(ev);
       break; 
   }
+}
+
+function loadEvents() {
+  return db.loadEvents(processEvent);
 }
 
 function processStartEvent(ev) {
@@ -53,9 +50,7 @@ function processRedeemEvent(ev) {
   jackpots.redeem(eventId, refId);
 }
 
-loadEventsFromDB();
-
 module.exports = {
     addEvent,
-    loadEventsFromDB
+    loadEvents
 }

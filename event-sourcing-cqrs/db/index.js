@@ -1,11 +1,13 @@
 const dotenv = require('dotenv');
 dotenv.config();
 
-const { Pool } = require("pg");
+const { Pool, Connection } = require("pg");
 const pool = new Pool({
   connectionString: process.env.DATABASE_URL,
   max: process.env.DATABASE_MAX_CONN,
 });
+
+const Cursor = require('pg-cursor');
 
 async function query(sql) {
   const connection = await pool.connect();
@@ -20,6 +22,42 @@ async function query(sql) {
   }
 
   return res;
+}
+
+function readCursor(cursor, count) {
+  return new Promise((resolve, reject) => {
+      cursor.read(count, (err, rows, result) => {
+          if (err) {
+              return reject(err);
+          }
+          return resolve(rows);
+      });
+  });
+}
+
+// load all events from db and pass them to the process pipeline
+async function loadEvents(processFn) {
+  console.log("Loading events from DB");
+  const connection = await pool.connect();
+  const CHUNK_SIZE = 100;
+  try {
+    const text = 'SELECT * FROM "Events"';
+    const cursor = connection.query(new Cursor(text));
+
+    do {
+      const rows = await readCursor(cursor, CHUNK_SIZE);
+      if (rows.length === 0) {
+          break;
+      }
+      rows.forEach(row => {
+        let dbEv = row.payload;
+        dbEv.id = row.id;
+        processFn(dbEv);
+      });
+    } while (true);
+  } finally {
+    connection.end();
+  }
 }
 
 async function dropTable() {
@@ -72,6 +110,7 @@ async function insertEvent(ev) {
 }
 
 module.exports = {
+  loadEvents,
   dropTable,
   createTable,
   deleteEvents, 
