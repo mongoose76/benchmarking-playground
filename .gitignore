@@ -35,3 +35,4 @@ lerna-debug.log*
 /express/node_modules/
 /nestjs/dist/
 /fastify/node_modules/
+/event-sourcing-cqrs/node_modules/

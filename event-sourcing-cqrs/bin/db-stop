@@ -1,0 +1,2 @@
+docker kill jackpot-db
+docker rm jackpot-db
