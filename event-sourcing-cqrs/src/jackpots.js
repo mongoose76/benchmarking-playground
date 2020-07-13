@@ -49,7 +49,7 @@ function getByRefId(refId) {
 
 function getAll() {
   let res = jackpots.map(j => j.toJSON());
-  console.log(JSON.stringify(res));
+  //console.log(JSON.stringify(res));
   return res;
 }
 
