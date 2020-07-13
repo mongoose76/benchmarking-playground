@@ -10,7 +10,7 @@ let Jackpot = class {
   }
 
   addContribution(val) {
-    console.log("addContribution for jackpot id " + this.id);
+    //console.log("addContribution for jackpot id " + this.id);
     this.value += val;
   }
 
@@ -31,10 +31,9 @@ function startJackpot(eventId, refs) {
 
 function contribute(refId, value) {
   for (j of jackpots) {
-    console.log(JSON.stringify(j));
-    console.log("does " + j.refs + " include " + refId);
+    //console.log("does " + j.refs + " include " + refId);
     if (j.refs.includes(refId)) {
-      console.log("it does!");
+      //console.log("it does!");
       j.addContribution(value);
     }
   }
@@ -57,6 +56,7 @@ function getAll() {
 module.exports = {
   startJackpot,
   contribute,
+  redeem,
   getByRefId,
   getAll
 }

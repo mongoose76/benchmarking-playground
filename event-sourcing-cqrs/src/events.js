@@ -5,7 +5,7 @@ async function addEvent(ev) {
   let res = await db.insertEvent(ev);
   let dbEv = res.rows[0].payload;
   dbEv.id = res.rows[0].id;
-  console.log(JSON.stringify(dbEv));
+  //console.log(JSON.stringify(dbEv));
   processEvent(dbEv);
   return dbEv;
 }
@@ -18,7 +18,7 @@ function loadEventsFromDB() {
 }
 
 function processEvent(ev) {
-  console.log("processing event " + JSON.stringify(ev));
+  //console.log("processing event " + JSON.stringify(ev));
   switch (ev.type) {
     case 'start':
       processStartEvent(ev);
@@ -40,7 +40,7 @@ function processStartEvent(ev) {
 }
 
 function processContributeEvent(ev) {
-  console.log("processing contribute event " + JSON.stringify(ev));
+  //console.log("processing contribute event " + JSON.stringify(ev));
   let refId = ev.refId;
   let value = ev.value;
   jackpots.contribute(refId, value);
@@ -50,7 +50,7 @@ function processRedeemEvent(ev) {
   console.log("processing redeem event " + JSON.stringify(ev));
   let eventId = ev.id;
   let refId = ev.refId;
-  jackpots.redeemJackpot(eventId, refId);
+  jackpots.redeem(eventId, refId);
 }
 
 loadEventsFromDB();
