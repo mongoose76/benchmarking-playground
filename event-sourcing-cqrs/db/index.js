@@ -41,7 +41,7 @@ async function loadEvents(processFn) {
   const connection = await pool.connect();
   const CHUNK_SIZE = 100;
   try {
-    const text = 'SELECT * FROM "Events"';
+    const text = 'SELECT * FROM "Events" ORDER BY "createdAt" ASC';
     const cursor = connection.query(new Cursor(text));
 
     do {
