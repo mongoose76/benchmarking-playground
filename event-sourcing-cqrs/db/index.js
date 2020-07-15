@@ -75,10 +75,10 @@ async function createTable() {
   WITH (oids = false);`;
   await query(sql);
 
-  sql = `CREATE INDEX idx_refid ON "Events" ((payload->>'refId'))`;
+  sql = `CREATE INDEX IF NOT EXISTS idx_refid ON "Events" ((payload->>'refId'))`;
   await query(sql);
 
-  sql = `CREATE INDEX idx_value ON "Events" ((payload->>'type'))`;
+  sql = `CREATE INDEX IF NOT EXISTS idx_value ON "Events" ((payload->>'type'))`;
   await query(sql);
 }
 

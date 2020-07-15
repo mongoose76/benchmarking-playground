@@ -58,4 +58,6 @@ const start = async () => {
     process.exit(1);
   }
 };
-events.loadEvents().then(() => start());
+db.createTable().then(() => {
+    events.loadEvents().then(() => start())
+});
