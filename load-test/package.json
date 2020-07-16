@@ -9,7 +9,8 @@
     "load-test-100": "VUS=100 yarn load-test",
     "load-test-1k": "VUS=1000 yarn load-test",
     "load-test-2k": "VUS=2000 yarn load-test",
-    "load-test-3k": "VUS=3000 yarn load-test"
+    "load-test-3k": "VUS=3000 yarn load-test",
+    "load-test-4k": "VUS=4000 yarn load-test"
   },
   "dependencies": {
   }
