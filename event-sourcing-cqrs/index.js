@@ -1,28 +1,34 @@
-const db = require("./db");
-
-const events = require("./src/events");
-const jackpots = require("./src/jackpots");
+let startTime = Date.now();
 
 const fastify = require("fastify");
-const app = fastify({ logger: false });
+const app = fastify({
+  logger:
+  {
+    level: 'info',
+  }
+});
 const port = 3000;
 
-app.get("/jackpots", async (req, res) => {
+const db = require("./db")(app);
+const jackpots = require("./src/jackpots")(app);
+const events = require("./src/events")(app, db, jackpots);
+
+app.get("/jackpots", { logLevel: "warn" }, async (req, res) => {
   res.send(jackpots.getAll());
 });
 
-app.get("/jackpots/:refId", async (req, res) => {
+app.get("/jackpots/:refId", { logLevel: "warn" }, async (req, res) => {
   let refId = req.params.refId;
   res.send(jackpots.getByRefId(refId));
 });
 
-app.get("/jackpots/:refId/raw", async (req, res) => {
+app.get("/jackpots/:refId/raw", { logLevel: "warn" }, async (req, res) => {
   let refId = req.params.refId;
   let r = await db.getRefIdAggregateValue(refId);
   res.send(r);
 });
 
-app.post("/events", async (req, res) => {
+app.post("/events", { logLevel: "warn" }, async (req, res) => {
   let ev = req.body;
   let r = events.addEvent(ev);
   res.status(201).send(r);
@@ -43,7 +49,7 @@ const start = async () => {
         refs: ['A', 'C']
       }
       events.addEvent(startJackpotEvent);
-      
+
       startJackpotEvent = {
         type: 'start',
         refs: ['B', 'D']
@@ -53,11 +59,13 @@ const start = async () => {
 
     await app.listen(port);
     app.log.info(`server listening on ${app.server.address().port}`);
+    let endTime = Date.now();
+    app.log.info(`startup time ${endTime - startTime}ms`);
   } catch (err) {
     app.log.error(err);
     process.exit(1);
   }
 };
 db.createTable().then(() => {
-    events.loadEvents().then(() => start())
+  events.loadEvents().then(() => start())
 });
