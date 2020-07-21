@@ -1,7 +1,3 @@
-# compiled output
-/dist
-/node_modules
-
 # Logs
 logs
 *.log
@@ -32,7 +28,20 @@ lerna-debug.log*
 !.vscode/tasks.json
 !.vscode/launch.json
 !.vscode/extensions.json
-/express/node_modules/
+
+# nestjs
+/nestjs/node_modules/
 /nestjs/dist/
+
+# express
+/express/node_modules/
+
+# fastify
 /fastify/node_modules/
+
+# event-sourcing-cqrs
 /event-sourcing-cqrs/node_modules/
+
+# Clinic
+.clinic/*
+/**/.clinic/*
