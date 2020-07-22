@@ -37,10 +37,6 @@ app.post("/events", { logLevel: "warn" }, async (req, res) => {
 // Run the server!
 const start = async () => {
   try {
-    //await db.dropTable();
-    //await db.createTable();
-    //await db.deleteEvents();
-
     if (jackpots.getAll().length === 0) {
       console.log("Starting jackpots ...");
 
@@ -66,6 +62,6 @@ const start = async () => {
     process.exit(1);
   }
 };
-db.createTable().then(() => {
-  events.loadEvents().then(() => start())
-});
+
+// load events from DB then start the server
+events.loadEvents().then(() => start());

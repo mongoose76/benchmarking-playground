@@ -39,24 +39,25 @@ module.exports = function(app) {
 
   // load all events from db and pass them to the process pipeline
   async function loadEvents(processFn) {
-    app.log.debug("Loading events from DB");
+    app.log.info("Loading events from DB ...");
     const connection = await pool.connect();
-    const CHUNK_SIZE = 1000000;
+    const CHUNK_SIZE = 500000;
     try {
       const text = 'SELECT * FROM "Events" ORDER BY "id" ASC';
       const cursor = connection.query(new Cursor(text));
       let idx = 0;
-      do {
-        app.log.info(`Loading events ${idx * CHUNK_SIZE} to ${++idx * CHUNK_SIZE}`);
-        const rows = await readCursor(cursor, CHUNK_SIZE);
-        if (rows.length === 0) {
-            break;
-        }
+      do {        
+        const rows = await readCursor(cursor, CHUNK_SIZE);        
         rows.forEach(row => {
           let dbEv = row.payload;
           dbEv.id = row.id;
           processFn(dbEv);
         });
+        app.log.info(`Loaded events ${(idx * CHUNK_SIZE).toLocaleString()} to ${(idx * CHUNK_SIZE + rows.length).toLocaleString()}`);
+        if (rows.length < CHUNK_SIZE) {
+          break;
+        }
+        idx++;
       } while (true);
     } finally {
       connection.end();

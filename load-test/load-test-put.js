@@ -12,18 +12,34 @@ export let options = {
   }
 };
 
-function postEvent(event) {
-  let headers = {'Content-Type': 'application/json'};
-  let url = 'http://127.0.0.1:3000/events';
-  return http.post(url, JSON.stringify(event), {headers: headers});
-}
-
 const refIds = ['A', 'B', 'C', 'D'];
 
 export default function() {
   var refId = refIds[Math.floor(refIds.length * Math.random())];
   let userId = __VU;
 
+  postContributeEvent(refId, userId);
+
+  if (__ITER % 100 === 0 && __VU % 50 === 0) {
+    postRedemptionEvent(refId, userId);
+  }
+
+  let url = 'http://127.0.0.1:3000/jackpots';
+  let res = http.get(url);
+  check(res, {
+    'get jackpots returns 200': (r) => r.status === 200,
+  });
+
+  sleep(1);
+}
+
+function postEvent(event) {
+  let headers = {'Content-Type': 'application/json'};
+  let url = 'http://127.0.0.1:3000/events';
+  return http.post(url, JSON.stringify(event), {headers: headers});
+}
+
+function postContributeEvent(refId, userId) {
   let contributeEvent = {
     "refId": refId,
     "userId": userId,
@@ -34,28 +50,20 @@ export default function() {
   let res = postEvent(contributeEvent);
 
   check(res, {
-    'post event returns 201': (r) => r.status === 201,
+    'post contribute event returns 201': (r) => r.status === 201,
   });
+}
 
-  if (__ITER % 100 === 0 && __VU % 50 === 0) {
-    let redemptionEvent = {
-      "refId": refId,
-      "userId": userId,
-      "type": "redeem"
-    };
+function postRedemptionEvent(refId, userId) {
+  let redemptionEvent = {
+    "refId": refId,
+    "userId": userId,
+    "type": "redeem"
+  };
 
-    let res = postEvent(redemptionEvent);
-    
-    check(res, {
-      'post event returns 201': (r) => r.status === 201,
-    });
-  }
-
-  let url = 'http://127.0.0.1:3000/jackpots';
-  res = http.get(url);
+  let res = postEvent(redemptionEvent);
+  
   check(res, {
-    'get refs returns 200': (r) => r.status === 200,
+    'post redemption event returns 201': (r) => r.status === 201,
   });
-
-  sleep(1);
 }

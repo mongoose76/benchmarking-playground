@@ -24,7 +24,8 @@ module.exports = function(app, db, jackpots) {
     }
   }
 
-  function loadEvents() {
+  async function loadEvents() {
+    await db.createTable();
     return db.loadEvents(processEvent);
   }
 
