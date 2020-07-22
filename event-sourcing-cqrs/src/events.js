@@ -1,9 +1,7 @@
 module.exports = function(app, db, jackpots) {
 
   async function addEvent(ev) {
-    let res = await db.insertEvent(ev);
-    let dbEv = res.rows[0].payload;
-    dbEv.id = res.rows[0].id;
+    let dbEv = await db.insertEvent(ev);
     app.log.debug(JSON.stringify(dbEv));
     processEvent(dbEv);
     return dbEv;

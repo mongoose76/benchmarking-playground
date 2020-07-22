@@ -107,10 +107,13 @@ module.exports = function(app) {
         )
         VALUES (
           '${JSON.stringify(ev)}', now()
-        ) RETURNING "id", "payload", "createdAt"
-      `;
+        ) RETURNING "id", "payload", "createdAt"`;
 
-    return await query(sql);
+    let res = await query(sql);
+    return {
+      id: res.rows[0].id,
+      ... res.rows[0].payload
+    };
   }
 
   return {
