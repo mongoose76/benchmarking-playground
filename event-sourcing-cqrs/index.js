@@ -1,15 +1,13 @@
 let startTime = Date.now();
+const log = require('pino')({ level: 'info', prettyPrint: true });
 
 const fastify = require("fastify");
 const app = fastify({
-  logger:
-  {
-    level: 'info',
-  }
+  logger: log
 });
 const port = 3000;
 
-const db = require("./db")(app);
+const db = require("./db/index-no-json")(app);
 const jackpots = require("./src/jackpots")(app);
 const events = require("./src/events")(app, db, jackpots);
 
@@ -38,7 +36,7 @@ app.post("/events", { logLevel: "warn" }, async (req, res) => {
 const start = async () => {
   try {
     if (jackpots.getAll().length === 0) {
-      console.log("Starting jackpots ...");
+      app.log.info("Starting jackpots ...");
 
       let startJackpotEvent = {
         type: 'start',
