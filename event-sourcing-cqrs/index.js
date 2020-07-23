@@ -1,11 +1,9 @@
 let startTime = Date.now();
+const log = require('pino')({ level: 'info', prettyPrint: true });
 
 const fastify = require("fastify");
 const app = fastify({
-  logger:
-  {
-    level: 'info',
-  }
+  logger: log
 });
 const port = 3000;
 
@@ -39,6 +37,7 @@ const start = async () => {
   try {
     if (jackpots.getAll().length === 0) {
       console.log("Starting jackpots ...");
+      app.log.info("Starting jackpots ...");
 
       let startJackpotEvent = {
         type: 'start',
