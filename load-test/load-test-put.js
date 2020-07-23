@@ -9,9 +9,11 @@ export let options = {
   ],
   thresholds: {
     'http_req_duration': ['p(99)<100'], // 99% of requests must complete below 100ms
-  }
+  },
+  throw: true,
 };
 
+const BASE_URL = __ENV.BASE_URL || "http://127.0.0.1:3000";
 const refIds = ['A', 'B', 'C', 'D'];
 
 export default function() {
@@ -24,7 +26,7 @@ export default function() {
     postRedemptionEvent(refId, userId);
   }
 
-  let url = 'http://127.0.0.1:3000/jackpots';
+  let url = `${BASE_URL}/jackpots`;
   let res = http.get(url);
   check(res, {
     'get jackpots returns 200': (r) => r.status === 200,
@@ -35,7 +37,7 @@ export default function() {
 
 function postEvent(event) {
   let headers = {'Content-Type': 'application/json'};
-  let url = 'http://127.0.0.1:3000/events';
+  let url = `${BASE_URL}/events`;
   return http.post(url, JSON.stringify(event), {headers: headers});
 }
 
