@@ -52,7 +52,7 @@ const start = async () => {
       events.addEvent(startJackpotEvent);
     }
 
-    await app.listen(port);
+    await app.listen(port, "0.0.0.0");
     app.log.info(`server listening on ${app.server.address().port}`);
     let endTime = Date.now();
     app.log.info(`startup time ${endTime - startTime}ms`);
