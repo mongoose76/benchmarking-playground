@@ -8,8 +8,8 @@ const app = fastify({
 const port = 3000;
 
 const db = require("./db")(app);
-const jackpots = require("./src/jackpots")(app);
-const events = require("./src/events")(app, db, jackpots);
+const jackpots = require("./jackpots")(app);
+const events = require("./events")(app, db, jackpots);
 
 app.get("/jackpots", { logLevel: "warn" }, async (req, res) => {
   res.send(jackpots.getAll());
