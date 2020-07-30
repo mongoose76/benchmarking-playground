@@ -14,9 +14,32 @@ export let options = {
 };
 
 const BASE_URL = __ENV.BASE_URL || "http://127.0.0.1:3000";
+const TEST_TYPE = __ENV.TEST || "full";
 const refIds = ['A', 'B', 'C', 'D'];
 
 export default function() {
+  switch (TEST_TYPE) {
+    case "simple":
+      runSimpleTest();
+      break;
+    case "full":
+      runFullTest();
+      break;
+    default:
+      throw Error("Test type an only be full or simple");
+  }
+  sleep(1);
+}
+
+function runSimpleTest() {
+  let url = `${BASE_URL}/jackpots`;
+  let res = http.get(url);
+  check(res, {
+    'get jackpots returns 200': (r) => r.status === 200,
+  });
+}
+
+function runFullTest() {
   var refId = refIds[Math.floor(refIds.length * Math.random())];
   let userId = __VU;
 
@@ -31,8 +54,6 @@ export default function() {
   check(res, {
     'get jackpots returns 200': (r) => r.status === 200,
   });
-
-  sleep(1);
 }
 
 function postEvent(event) {

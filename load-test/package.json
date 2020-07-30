@@ -5,7 +5,7 @@
   "license": "MIT",
   "scripts": {
     "start": "node index.js",
-    "load-test": "k6 run -e BASE_URL=http://127.0.0.1:3000 --summary-trend-stats=\"avg,min,max,p(90),p(95),p(99)\" load-test-put.js",
+    "load-test": "TEST=simple k6 run -e BASE_URL=http://127.0.0.1:3000 --summary-trend-stats=\"avg,min,max,p(90),p(95),p(99)\" load-test.js",
     "load-test-100": "VUS=100 yarn load-test",
     "load-test-1k": "VUS=1000 yarn load-test",
     "load-test-2k": "VUS=2000 yarn load-test",
