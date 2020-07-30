@@ -17,7 +17,12 @@ const BASE_URL = __ENV.BASE_URL || "http://127.0.0.1:3000";
 const TEST_TYPE = __ENV.TEST || "full";
 const refIds = ['A', 'B', 'C', 'D'];
 
-export default function() {
+export function setup() {
+  console.log(`BASE_URL: ${BASE_URL}`);
+  console.log(`TEST TYPE: ${TEST_TYPE}`);
+}
+
+export default function() {    
   switch (TEST_TYPE) {
     case "simple":
       runSimpleTest();
