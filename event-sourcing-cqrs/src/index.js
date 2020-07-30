@@ -7,6 +7,8 @@ const app = fastify({
 });
 const port = 3000;
 
+app.server.keepAliveTimeout = 0;
+
 const db = require("./db")(app);
 const jackpots = require("./jackpots")(app);
 const events = require("./events")(app, db, jackpots);
