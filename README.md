@@ -43,11 +43,12 @@ Handling that many online users with just one service instance is alright in my 
 
 6. Uses hardware to the max
 I want to have just one microservice instance in the system. Which is so fast it handles the peak load of the system with room to spare. 
-And can be restarted anytime if needed (again, crashes/bugs happen, nobody is perfect). As a secondary target I want this service to scale horizontally, 
-but that would mean adding an extra 10k/20k req/s handling capacity
+And can be restarted anytime if needed (again, crashes/bugs happen, nobody is perfect)
 
 7. Is simple to understand
 Complicated architecture is nice on paper but not often actually seen in production.
+
+8. [OPTIONAL] As a secondary target I want to scale horizontally. Mostly for high availability since the requests handled by a single instance should be enough.
 
 
 
