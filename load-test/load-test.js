@@ -22,7 +22,7 @@ export function setup() {
   console.log(`TEST TYPE: ${TEST_TYPE}`);
 }
 
-export default function() {    
+export default function(data) {
   switch (TEST_TYPE) {
     case "simple":
       runSimpleTest();
@@ -34,6 +34,10 @@ export default function() {
       throw Error("Test type an only be full or simple");
   }
   sleep(1);
+}
+
+export function teardown(data) {
+  // executed once at end of the test
 }
 
 function runSimpleTest() {
