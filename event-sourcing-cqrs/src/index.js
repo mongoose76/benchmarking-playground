@@ -13,6 +13,12 @@ const db = require("./db")(app);
 const jackpots = require("./jackpots")(app);
 const events = require("./events")(app, db, jackpots);
 
+let requestCount = 0;
+app.addHook('onRequest', (request, reply, done) => {
+  ++requestCount % 100000 === 0 ? console.log(`${requestCount} requests processed ====== `) : null;
+  done();
+});
+
 app.get("/jackpots", { logLevel: "warn" }, async (req, res) => {
   res.send(jackpots.getAll());
 });
@@ -38,7 +44,6 @@ app.post("/events", { logLevel: "warn" }, async (req, res) => {
 const start = async () => {
   try {
     if (jackpots.getAll().length === 0) {
-      console.log("Starting jackpots ...");
       app.log.info("Starting jackpots ...");
 
       let startJackpotEvent = {
