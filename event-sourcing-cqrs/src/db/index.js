@@ -2,10 +2,12 @@ module.exports = function(app) {
   const dotenv = require('dotenv');
   dotenv.config();
 
-  const { Pool, Connection } = require("pg");
+  const { Pool } = require("pg");
   const pool = new Pool({
     connectionString: process.env.DATABASE_URL,
-    max: process.env.DATABASE_MAX_CONN,
+    max: Number.parseInt(process.env.DATABASE_MAX_CONN),
+    connectionTimeoutMillis: Number.parseInt(process.env.DATABASE_CONNECTION_TIMEOUT),
+    idleTimeoutMillis: Number.parseInt(process.env.DATABASE_IDLE_TIMEOUT),
   });
 
   const Cursor = require('pg-cursor');
@@ -17,9 +19,13 @@ module.exports = function(app) {
     try {
       res = await connection.query(sql);
     } catch (err) {
-      app.log.err(err);
+      app.log.error(err);
     } finally {
-      connection.release();
+      try {
+        connection.release();
+      } catch (err) {
+        app.log.error(err);
+      }
     }
 
     app.log.trace(res);
@@ -43,10 +49,10 @@ module.exports = function(app) {
     const connection = await pool.connect();
     const CHUNK_SIZE = 500000;
     try {
-      const text = 'SELECT * FROM "Events" ORDER BY "id" ASC';
+      const text = 'SELECT id, payload FROM "Events" ORDER BY id ASC';
       const cursor = connection.query(new Cursor(text));
       let idx = 0;
-      do {        
+      do {
         const rows = await readCursor(cursor, CHUNK_SIZE);        
         rows.forEach(row => {
           let dbEv = row.payload;
