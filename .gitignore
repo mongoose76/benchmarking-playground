@@ -29,18 +29,11 @@ lerna-debug.log*
 !.vscode/launch.json
 !.vscode/extensions.json
 
-# nestjs
-/nestjs/node_modules/
-/nestjs/dist/
+# node_modules
+/**/node_modules/*
 
-# express
-/express/node_modules/
-
-# fastify
-/fastify/node_modules/
-
-# event-sourcing-cqrs
-/event-sourcing-cqrs/node_modules/
+# node_modules
+/**/.env
 
 # Clinic
 .clinic/*
