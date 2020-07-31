@@ -15,7 +15,7 @@ const events = require("./events")(app, db, jackpots);
 
 let requestCount = 0;
 app.addHook('onRequest', (request, reply, done) => {
-  ++requestCount % 100000 === 0 ? console.log(`${requestCount} requests processed ====== `) : null;
+  ++requestCount % 100000 === 0 ? app.log.warn(`${requestCount} requests processed ====== `) : null;
   done();
 });
 
