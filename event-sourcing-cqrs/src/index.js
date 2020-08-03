@@ -36,8 +36,13 @@ app.get("/jackpots/:refId/raw", { logLevel: "warn" }, async (req, res) => {
 
 app.post("/events", { logLevel: "warn" }, async (req, res) => {
   let ev = req.body;
-  let r = events.addEvent(ev);
-  res.status(201).send(r);
+  try {
+    let r = events.addEvent(ev);
+    res.status(201).send(r);
+  } catch (err) {
+    app.log.error(err);
+    res.status(500).send(err);
+  }
 });
 
 // Run the server!
