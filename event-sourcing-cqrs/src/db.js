@@ -14,6 +14,7 @@ module.exports = function(app) {
 
   async function query(sql) {
     const connection = await pool.connect();
+    //pool.waitingCount > 0 ? app.log.warn(`pg pool state: totalCount ${pool.totalCount} idle ${pool.idleCount} waiting ${pool.waitingCount}`) : null;
     let res;
 
     try {
