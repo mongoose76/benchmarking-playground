@@ -4,5 +4,5 @@ docker run \
   -e POSTGRES_PASSWORD=postgres \
   -e POSTGRES_DB=jackpot \
   -p 5432:5432 \
-  --shm-size 512m \
+  --shm-size 1024m \
   --name jackpot-db -d circleci/postgres:9.6.16-alpine-ram
