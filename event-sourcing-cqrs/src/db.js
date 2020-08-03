@@ -12,6 +12,37 @@ module.exports = function(app) {
 
   const Cursor = require('pg-cursor');
 
+  const eventSchema = {
+    title: 'Event Schema',
+    type: 'object',
+    properties: {
+      type: {
+        description: 'Event Type',
+        type: 'string'
+      },
+      refId: {
+        'description': 'Jackpot Ref Id',
+        type: 'string'
+      },
+      refs: {
+        description: 'Jackpot start refs array',
+        type: 'array',
+        items: {
+          type: 'string'
+        }
+      },
+      value: {
+        description: 'Event value',
+        type: 'integer'
+      },
+      userId: {
+        description: 'User Id',
+        type: 'integer'
+      }
+    }
+  }
+  const fastJsonStringify = require('fast-json-stringify')(eventSchema);
+
   async function query(sql) {
     const connection = await pool.connect();
     //pool.waitingCount > 0 ? app.log.warn(`pg pool state: totalCount ${pool.totalCount} idle ${pool.idleCount} waiting ${pool.waitingCount}`) : null;
@@ -113,7 +144,7 @@ module.exports = function(app) {
           "payload", "createdAt"
         )
         VALUES (
-          '${JSON.stringify(ev)}', now()
+          '${fastJsonStringify(ev)}', now()
         ) RETURNING "id", "payload", "createdAt"`;
 
     let res = await query(sql);
