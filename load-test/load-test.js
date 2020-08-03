@@ -4,7 +4,7 @@ import { sleep, check } from 'k6';
 let vus = __ENV.VUS;
 export let options = {
   stages: [
-    { duration: "30s", target: vus }, // simulate ramp-up of traffic from 1 to max users over 30 s.
+    { duration: "60s", target: vus }, // simulate ramp-up of traffic from 1 to max users over 30 s.
     { duration: "120s", target: vus }, // stay at max users for 30 s
   ],
   thresholds: {
