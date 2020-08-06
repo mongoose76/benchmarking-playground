@@ -1,11 +1,13 @@
 import http from 'k6/http';
 import { sleep, check } from 'k6';
 
-let vus = __ENV.VUS;
+let config = JSON.parse(open("config.json"));
+
+let VUS = config.VUS;
 export let options = {
   stages: [
-    { duration: "60s", target: vus }, // ramp-up stage
-    { duration: "120s", target: vus }, // load test stage
+    { duration: "60s", target: VUS }, // ramp-up stage
+    { duration: "120s", target: VUS }, // load test stage
   ],
   thresholds: {
     'http_req_duration': ['p(99)<100'], // 99% of requests must complete below 100ms
@@ -13,8 +15,8 @@ export let options = {
   throw: true,
 };
 
-const BASE_URL = __ENV.BASE_URL || "http://127.0.0.1:3000";
-const TEST_TYPE = __ENV.TEST || "full";
+const BASE_URL = config.BASE_URL || "http://127.0.0.1:3000";
+const TEST_TYPE = config.TEST_TYPE || "full";
 const refIds = ['A', 'B', 'C', 'D'];
 
 export function setup() {

@@ -5,14 +5,7 @@
   "license": "MIT",
   "scripts": {
     "start": "node index.js",
-    "load-test": "cross-env TEST=full k6 run -e BASE_URL=http://172.20.20.151:3000 --summary-trend-stats=\"avg,min,max,p(90),p(95),p(99)\" load-test.js",
-    "load-test-100": "cross-env VUS=100 yarn load-test",
-    "load-test-1k": "cross-env VUS=1000 yarn load-test",
-    "load-test-2k": "cross-env VUS=2000 yarn load-test",
-    "load-test-2.5k": "cross-env VUS=2500 yarn load-test",
-    "load-test-3k": "cross-env VUS=3000 yarn load-test",
-    "load-test-3.5k": "cross-env VUS=3500 yarn load-test",
-    "load-test-4k": "cross-env VUS=4000 yarn load-test"
+    "load-test": "k6 run --summary-trend-stats=\"avg,min,max,p(90),p(95),p(99)\" load-test.js"
   },
   "dependencies": {
     "cross-env": "^7.0.2"
