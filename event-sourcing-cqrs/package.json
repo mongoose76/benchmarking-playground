@@ -1,9 +1,11 @@
 {
   "name": "express",
   "version": "1.0.0",
-  "main": "src/index.js",
+  "main": "dist/index.js",
   "license": "MIT",
   "scripts": {
+    "build": "tsc",
+    "prestart": "yarn build",
     "start": "node ."
   },
   "dependencies": {
@@ -12,5 +14,10 @@
     "pg": "^8.3.0",
     "pg-cursor": "^2.3.0",
     "pino-pretty": "^4.1.0"
+  },
+  "devDependencies": {
+    "typescript": "^3.9.7",
+    "@types/express": "^4.17.7",
+    "@types/node": "^14.0.27"
   }
 }

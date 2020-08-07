@@ -2,6 +2,10 @@ module.exports = function(app) {
   const assert = require("assert");
 
   let Jackpot = class {
+    public id;
+    public refs;
+    public value;
+
     constructor(id, refs) {
       assert(id !== undefined);
       assert(Array.isArray(refs));
@@ -31,7 +35,7 @@ module.exports = function(app) {
   }
 
   function contribute(refId, value) {
-    for (j of jackpots) {
+    for (let j of jackpots) {
       app.log.debug("does " + j.refs + " include " + refId);
       if (j.refs.includes(refId)) {
         app.log.debug("it does!");

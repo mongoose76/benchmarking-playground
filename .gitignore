@@ -38,3 +38,5 @@ lerna-debug.log*
 # Clinic
 .clinic/*
 /**/.clinic/*
+
+/event-sourcing-cqrs/dist/

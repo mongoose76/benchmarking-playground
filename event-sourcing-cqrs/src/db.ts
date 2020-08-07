@@ -64,7 +64,7 @@ module.exports = function(app) {
     return res;
   }
 
-  function readCursor(cursor, count) {
+  function readCursor(cursor, count): Promise<any[]> {
     return new Promise((resolve, reject) => {
         cursor.read(count, (err, rows, result) => {
             if (err) {
@@ -85,7 +85,7 @@ module.exports = function(app) {
       const cursor = connection.query(new Cursor(text));
       let idx = 0;
       do {
-        const rows = await readCursor(cursor, CHUNK_SIZE);        
+        const rows: any[] = await readCursor(cursor, CHUNK_SIZE);
         rows.forEach(row => {
           let dbEv = row.payload;
           dbEv.id = row.id;
