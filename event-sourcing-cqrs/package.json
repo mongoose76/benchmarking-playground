@@ -4,10 +4,10 @@
   "main": "dist/index.js",
   "license": "MIT",
   "scripts": {
-    "prebuild": "tslint -c tslint.json -p tsconfig.json --fix",
     "build": "tsc",
     "prestart": "yarn build",
-    "start": "node ."
+    "start": "node .",
+    "lint": "tslint -c tslint.json -p tsconfig.json --fix"
   },
   "dependencies": {
     "@types/pg": "^7.14.4",
