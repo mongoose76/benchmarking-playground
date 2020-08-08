@@ -1,12 +1,13 @@
 const startTime = Date.now();
 import pino from "pino";
-import fastify from "fastify";
+import fastify, { FastifyInstance } from "fastify";
 import * as db from "./db";
 import { AddressInfo } from "net";
 import * as jackpots from "./jackpots";
 import * as events from "./events";
+import { setupRoutes } from "./routes";
 
-const app = fastify({
+const app: FastifyInstance = fastify({
   logger: pino({ level: 'info', prettyPrint: true })
 });
 const port = 3000;
@@ -16,40 +17,7 @@ app.server.keepAliveTimeout = 0;
 db.init(app.log);
 jackpots.init(app.log);
 events.init(db, jackpots, app.log);
-
-let requestCount = 0;
-app.addHook('onRequest', (request, reply, done) => {
-  if (++requestCount % 100000 === 0) {
-    app.log.warn(`${requestCount} requests processed ====== `);
-  }
-  done();
-});
-
-app.get("/jackpots", { logLevel: "warn" }, async (req, res) => {
-  res.send(jackpots.getAll());
-});
-
-app.get("/jackpots/:refId", { logLevel: "warn" }, async (req, res) => {
-  const refId = req.params.refId;
-  res.send(jackpots.getByRefId(refId));
-});
-
-app.get("/jackpots/:refId/raw", { logLevel: "warn" }, async (req, res) => {
-  const refId = req.params.refId;
-  const r = await db.getRefIdAggregateValue(refId);
-  res.send(r);
-});
-
-app.post("/events", { logLevel: "warn" }, async (req, res) => {
-  const ev = req.body;
-  try {
-    const r = events.addEvent(ev);
-    res.status(201).send(r);
-  } catch (err) {
-    app.log.error(err);
-    res.status(500).send(err);
-  }
-});
+setupRoutes(app);
 
 // Run the server!
 const start = async () => {

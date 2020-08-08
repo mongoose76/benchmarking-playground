@@ -6,11 +6,11 @@ export function init(appLogger) {
 }
 
 const Jackpot = class {
-  public id;
-  public refs;
-  public value;
+  public id: number;
+  public refs: string[];
+  public value: number;
 
-  constructor(id, refs) {
+  constructor(id: number, refs: string[]) {
     assert(id !== undefined);
     assert(Array.isArray(refs));
     this.id = id;
@@ -18,7 +18,7 @@ const Jackpot = class {
     this.value = 0;
   }
 
-  addContribution(val) {
+  addContribution(val: number) {
     logger.debug("addContribution for jackpot id " + this.id);
     this.value += val;
   }
