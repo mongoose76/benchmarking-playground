@@ -5,7 +5,7 @@ export function init(appLogger) {
   logger = appLogger;
 }
 
-let Jackpot = class {
+const Jackpot = class {
   public id;
   public refs;
   public value;
@@ -39,7 +39,7 @@ export function startJackpot(eventId, refs) {
 }
 
 export function contribute(refId, value) {
-  for (let j of jackpots) {
+  for (const j of jackpots) {
     logger.debug("does " + j.refs + " include " + refId);
     if (j.refs.includes(refId)) {
       logger.debug("it does!");
@@ -57,7 +57,7 @@ export function getByRefId(refId) {
 }
 
 export function getAll() {
-  let res = jackpots.map(j => j.toJSON());
+  const res = jackpots.map(j => j.toJSON());
   logger.debug(JSON.stringify(res));
   return res;
 }

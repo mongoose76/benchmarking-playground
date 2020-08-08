@@ -1,4 +1,4 @@
-let startTime = Date.now();
+const startTime = Date.now();
 import pino from "pino";
 import fastify from "fastify";
 import * as db from "./db";
@@ -19,7 +19,9 @@ events.init(db, jackpots, app.log);
 
 let requestCount = 0;
 app.addHook('onRequest', (request, reply, done) => {
-  ++requestCount % 100000 === 0 ? app.log.warn(`${requestCount} requests processed ====== `) : null;
+  if (++requestCount % 100000 === 0) {
+    app.log.warn(`${requestCount} requests processed ====== `);
+  }
   done();
 });
 
@@ -28,20 +30,20 @@ app.get("/jackpots", { logLevel: "warn" }, async (req, res) => {
 });
 
 app.get("/jackpots/:refId", { logLevel: "warn" }, async (req, res) => {
-  let refId = req.params.refId;
+  const refId = req.params.refId;
   res.send(jackpots.getByRefId(refId));
 });
 
 app.get("/jackpots/:refId/raw", { logLevel: "warn" }, async (req, res) => {
-  let refId = req.params.refId;
-  let r = await db.getRefIdAggregateValue(refId);
+  const refId = req.params.refId;
+  const r = await db.getRefIdAggregateValue(refId);
   res.send(r);
 });
 
 app.post("/events", { logLevel: "warn" }, async (req, res) => {
-  let ev = req.body;
+  const ev = req.body;
   try {
-    let r = events.addEvent(ev);
+    const r = events.addEvent(ev);
     res.status(201).send(r);
   } catch (err) {
     app.log.error(err);
@@ -70,7 +72,7 @@ const start = async () => {
 
     await app.listen(port, "0.0.0.0");
     app.log.info(`server listening on ${(app.server.address() as AddressInfo).port}`);
-    let endTime = Date.now();
+    const endTime = Date.now();
     app.log.info(`startup time ${endTime - startTime}ms`);
   } catch (err) {
     app.log.error(err);

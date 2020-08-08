@@ -12,9 +12,9 @@ export function init(appLogger) {
 
 const pool = new Pool({
   connectionString: process.env.DATABASE_URL,
-  max: Number.parseInt(process.env.DATABASE_MAX_CONN),
-  connectionTimeoutMillis: Number.parseInt(process.env.DATABASE_CONNECTION_TIMEOUT),
-  idleTimeoutMillis: Number.parseInt(process.env.DATABASE_IDLE_TIMEOUT),
+  max: Number(process.env.DATABASE_MAX_CONN),
+  connectionTimeoutMillis: Number(process.env.DATABASE_CONNECTION_TIMEOUT),
+  idleTimeoutMillis: Number(process.env.DATABASE_IDLE_TIMEOUT),
 });
 
 
@@ -52,7 +52,7 @@ const jsonStringify = FastJsonStringify(eventSchema);
 
 async function query(sql) {
   const connection = await pool.connect();
-  //pool.waitingCount > 0 ? logger.warn(`pg pool state: totalCount ${pool.totalCount} idle ${pool.idleCount} waiting ${pool.waitingCount}`) : null;
+  // pool.waitingCount > 0 ? logger.warn(`pg pool state: totalCount ${pool.totalCount} idle ${pool.idleCount} waiting ${pool.waitingCount}`) : null;
   let res;
 
   try {
@@ -94,7 +94,7 @@ export async function loadEvents(processFn) {
     do {
       const rows: any[] = await readCursor(cursor, CHUNK_SIZE);
       rows.forEach(row => {
-        let dbEv = row.payload;
+        const dbEv = row.payload;
         dbEv.id = row.id;
         processFn(dbEv);
       });
@@ -110,7 +110,7 @@ export async function loadEvents(processFn) {
 }
 
 export async function dropTable() {
-  let sql = `DROP TABLE IF EXISTS "Events"`;
+  const sql = `DROP TABLE IF EXISTS "Events"`;
   await query(sql);
 }
 
@@ -137,15 +137,15 @@ export async function deleteEvents() {
 }
 
 export async function getRefIdAggregateValue(refId) {
-  const sql = `select sum(CAST(payload ->> 'value' AS INTEGER)) AS val from  "Events" 
+  const sql = `select sum(CAST(payload ->> 'value' AS INTEGER)) AS val from  "Events"
                 WHERE payload ->> 'refId' = '${refId}' AND payload ->> 'type' = 'spin'`;
-  let res = await query(sql);    
+  const res = await query(sql);
   return res.rows[0].val;
 }
 
 export async function insertEvent(ev) {
   const sql = `
-      INSERT INTO 
+      INSERT INTO
       "Events"
       (
         "payload", "createdAt"
@@ -154,7 +154,7 @@ export async function insertEvent(ev) {
         '${jsonStringify(ev)}', now()
       ) RETURNING "id", "payload", "createdAt"`;
 
-  let res = await query(sql);
+  const res = await query(sql);
   return {
     id: res.rows[0].id,
     ... res.rows[0].payload

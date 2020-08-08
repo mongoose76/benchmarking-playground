@@ -9,7 +9,7 @@ export function init(appDB, appJackpots, appLogger) {
 }
 
 export async function addEvent(ev) {
-  let dbEv = await db.insertEvent(ev);
+  const dbEv = await db.insertEvent(ev);
   logger.debug(JSON.stringify(dbEv));
   processEvent(dbEv);
   return dbEv;
@@ -26,7 +26,7 @@ function processEvent(ev) {
       break;
     case 'redeem':
       processRedeemEvent(ev);
-      break; 
+      break;
   }
 }
 
@@ -37,21 +37,21 @@ export async function loadEvents() {
 
 function processStartEvent(ev) {
   logger.debug("processing start event " + JSON.stringify(ev));
-  let eventId = ev.id;
-  let refs = ev.refs;
+  const eventId = ev.id;
+  const refs = ev.refs;
   jackpots.startJackpot(eventId, refs);
 }
 
 function processContributeEvent(ev) {
   logger.debug("processing contribute event " + JSON.stringify(ev));
-  let refId = ev.refId;
-  let value = ev.value;
+  const refId = ev.refId;
+  const value = ev.value;
   jackpots.contribute(refId, value);
 }
 
 function processRedeemEvent(ev) {
   logger.debug("processing redeem event " + JSON.stringify(ev));
-  let eventId = ev.id;
-  let refId = ev.refId;
+  const eventId = ev.id;
+  const refId = ev.refId;
   jackpots.redeem(eventId, refId);
 }
