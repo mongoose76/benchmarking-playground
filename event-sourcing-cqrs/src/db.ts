@@ -1,24 +1,24 @@
 import dotenv from "dotenv";
 import { Pool } from "pg";
 import Cursor from "pg-cursor";
-import FastJsonStringify = require("fast-json-stringify");
+import FastJsonStringify, { Schema } from "fast-json-stringify";
 
 dotenv.config();
 
 let logger;
+let pool;
+
 export function init(appLogger) {
   logger = appLogger;
+  pool = new Pool({
+    connectionString: process.env.DATABASE_URL,
+    max: Number(process.env.DATABASE_MAX_CONN),
+    connectionTimeoutMillis: Number(process.env.DATABASE_CONNECTION_TIMEOUT),
+    idleTimeoutMillis: Number(process.env.DATABASE_IDLE_TIMEOUT),
+  });
 }
 
-const pool = new Pool({
-  connectionString: process.env.DATABASE_URL,
-  max: Number(process.env.DATABASE_MAX_CONN),
-  connectionTimeoutMillis: Number(process.env.DATABASE_CONNECTION_TIMEOUT),
-  idleTimeoutMillis: Number(process.env.DATABASE_IDLE_TIMEOUT),
-});
-
-
-const eventSchema: FastJsonStringify.Schema = {
+const eventSchema: Schema = {
   title: 'Event Schema',
   type: 'object',
   properties: {
