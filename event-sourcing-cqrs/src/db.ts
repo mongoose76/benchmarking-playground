@@ -50,7 +50,7 @@ const eventSchema: Schema = {
 
 const jsonStringify = FastJsonStringify(eventSchema);
 
-async function query(sql) {
+export async function query(sql) {
   const connection = await pool.connect();
   // pool.waitingCount > 0 ? logger.warn(`pg pool state: totalCount ${pool.totalCount} idle ${pool.idleCount} waiting ${pool.waitingCount}`) : null;
   let res;

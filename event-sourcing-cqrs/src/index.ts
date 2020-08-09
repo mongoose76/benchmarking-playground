@@ -7,21 +7,30 @@ import * as jackpots from "./jackpots";
 import * as events from "./events";
 import { setupRoutes } from "./routes";
 
-const app: FastifyInstance = fastify({
-  logger: pino({ level: 'info', prettyPrint: true })
-});
+export const createServer = () => {
+  const app: FastifyInstance = fastify({
+    logger: pino({ level: 'info', prettyPrint: true })
+  });  
+  app.server.keepAliveTimeout = 0;
+
+  setupRoutes(app);
+
+  return app;
+}
+
 const port = 3000;
 
-app.server.keepAliveTimeout = 0;
-
-db.init(app.log);
-jackpots.init(app.log);
-events.init(db, jackpots, app.log);
-setupRoutes(app);
-
 // Run the server!
-const start = async () => {
+export const startServer = async (app: FastifyInstance) => {
+
   try {
+    db.init(app.log);
+    jackpots.init(app.log);
+    events.init(db, jackpots, app.log);
+
+    // load events from DB then start the server
+    await events.loadEvents();
+
     if (jackpots.getAll().length === 0) {
       app.log.info("Starting jackpots ...");
 
@@ -37,7 +46,7 @@ const start = async () => {
       }
       events.addEvent(startJackpotEvent);
     }
-
+    
     await app.listen(port, "0.0.0.0");
     app.log.info(`server listening on ${(app.server.address() as AddressInfo).port}`);
     const endTime = Date.now();
@@ -48,5 +57,14 @@ const start = async () => {
   }
 };
 
-// load events from DB then start the server
-events.loadEvents().then(() => start());
+export const stopServer = async (app: FastifyInstance) => {
+  try {
+    app.server.close();
+  } catch (err) {
+    app.log.error(err);
+    process.exit(1);
+  }
+};
+
+const app = createServer();
+startServer(app);
