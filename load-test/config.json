@@ -1,5 +1,5 @@
 {
     "BASE_URL": "http://localhost:3000",
-    "VUS": 1500,
+    "VUS": 2000,
     "TEST_TYPE": "full"
 }
