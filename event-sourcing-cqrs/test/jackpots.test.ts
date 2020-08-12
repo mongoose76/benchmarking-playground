@@ -13,7 +13,6 @@ const app = createServer();
 describe("jackpots", () => {
 
     before(async () => {
-        await db.query(`TRUNCATE TABLE "Events";`);
         await startServer(app);
     });
 
